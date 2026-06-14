@@ -166,7 +166,7 @@ public class Store {
 
         for(Movie movie : movies) {
 
-            if (movie.isMovieAvaible() == false) { // Preguntamos si movie NO esta rentada.
+            if (movie.isMovieRented() == false) { // Preguntamos si movie NO esta rentada.
                 
                 busqueda.add(movie); // La agregamos a la lista.
                 
@@ -183,7 +183,7 @@ public class Store {
 
         for(Movie movie : movies) {
 
-            if (movie.isMovieAvaible() == true) { // Preguntar si movie esta rentada
+            if (movie.isMovieRented() == true) { // Preguntar si movie esta rentada
                 busqueda.add(movie); // La agregamos a la lista.
                 
             }

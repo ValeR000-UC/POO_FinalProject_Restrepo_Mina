@@ -7,12 +7,12 @@ public class Rental {
     private User user;
     private Customer customer;
     private String rentalId;
-    private boolean rentalActive = true;
+    private boolean rentalActive = true; // Se crea en activa por defecto.
     private int rentalDays;
     private float rentalCost;
 
     // Constructor
-    Rental(ArrayList<Movie> rentedMovies, User user, Customer customer, String rentalId, int rentalDays, float rentalCost) {
+    Rental(ArrayList<Movie> rentedMovies, User user, Customer customer, String rentalId, int rentalDays) {
 
         this.rentedMovies = rentedMovies;
         this.user = user;
@@ -22,17 +22,22 @@ public class Rental {
 
     }
 
-    private void calculateRentalCost(float currentPrice) {
+    private void calculateRentalCost(float currentPrice) { // Metodo que calcula el costo de la renta.
         
         rentalCost = (rentalDays * currentPrice) * consultRentedMovies().size(); 
         
     }
 
-    public void rentMovie(float currentPrice) {
+    public void processRentMovie(float currentPrice, ArrayList<Movie> movies) {
 
-        calculateRentalCost(currentPrice);
-        // falta marcar la pelicula como rentada
+        calculateRentalCost(currentPrice); // Calculamos el costo de la renta de las peliculas.
+        rent(movies); // Rentamos la pelicula.
 
+    }
+
+    public void processReturnMovie(ArrayList<Movie> movies) {
+
+        returnMovie(movies); // Devolvemos la pelicula.
     }
 
     public String getRentalId() {
@@ -64,29 +69,18 @@ public class Rental {
     }
 
     // Setters
-    public void markAsRented(ArrayList<Movie> movies) {
+    private void rent(ArrayList<Movie> movies) {
 
         for(Movie movie : movies) {
-
-            if (movie.isMovieAvaible() == false) { // Preguntamos si la pelicula no esta rentada, para poder rentarla.
-
-                movie = true; // Queda rentada.
-
-            }
+            movie.markAsRented(); // Si la pelicula estaba disponible, se renta.
         }
-
-        // Si no, necesitamos lanzar excepcion?
-
     }
 
-    public void markAsAvaible() {
+    private void returnMovie(ArrayList<Movie> movies) {
 
-        if (movieRented == true) { // Preguntamos si la pelicula esta rentada, para poder devolverla.
-            
-            movieRented = false; // Queda disponible.
-
+        for(Movie movie : movies) {
+            movie.markAsAvaible(); // Si la pelicula estaba rentada, se devuelve.
         }
-
-        // Si no, necesitamos lanzar excepcion?
     }
+
 }
