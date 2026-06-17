@@ -2,7 +2,7 @@ public class User {
     
     private String userName;
     private String userId;
-    private boolean userState = false;
+    private boolean userState = true;
 
     // Constructor
     User(String userName, String userId) {
@@ -30,5 +30,4 @@ public class User {
         return userState;
     }
 
-    // Metodo para modificar el userState. Cuando se registra al iniciar el programa, debe cambiarse a true.
 }

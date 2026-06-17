@@ -24,20 +24,22 @@ public class Rental {
 
     private void calculateRentalCost(float currentPrice) { // Metodo que calcula el costo de la renta.
         
-        rentalCost = (rentalDays * currentPrice) * consultRentedMovies().size(); 
+        rentalCost = (rentalDays * currentPrice) * consultRentedMovies().size();
         
     }
 
-    public void processRentMovie(float currentPrice, ArrayList<Movie> movies) {
+    public ArrayList<Boolean> processRentMovie(float currentPrice, ArrayList<Movie> movies) {
 
         calculateRentalCost(currentPrice); // Calculamos el costo de la renta de las peliculas.
-        rent(movies); // Rentamos la pelicula.
+        ArrayList<Boolean> activeRentals = rent(movies); // Guardamos los estados de las peliculas.
+        return activeRentals; // Se retornan los estados de las peliculas. 
 
     }
 
-    public void processReturnMovie(ArrayList<Movie> movies) {
+    public ArrayList<Boolean> processReturnMovie(ArrayList<Movie> movies) {
 
-        returnMovie(movies); // Devolvemos la pelicula.
+        ArrayList<Boolean> inactiveRentals = returnMovie(movies); // Guardamos los estados de las peliculas.
+        return inactiveRentals; // Se retornan los estados de las peliculas.
     }
 
     public String getRentalId() {
@@ -69,18 +71,28 @@ public class Rental {
     }
 
     // Setters
-    private void rent(ArrayList<Movie> movies) {
+    private ArrayList<Boolean> rent(ArrayList<Movie> movies) {
 
+        ArrayList<Boolean> confirmation = new ArrayList<>(); // Aqui guardamos si se renta o no la pelicula.
         for(Movie movie : movies) {
-            movie.markAsRented(); // Si la pelicula estaba disponible, se renta.
+            boolean c = movie.markAsRented(); // Cambiamos el estado de la pelicula (se renta).
+            confirmation.add(c); // Se guarda el estado de la renta (si se pudo rentar o no) para imprimir en el main.
         }
+
+        customer.chancgeCustomerState(); // Customer activo.
+        return confirmation; // Retornamos la lista de estados.
     }
 
-    private void returnMovie(ArrayList<Movie> movies) {
+    private ArrayList<Boolean> returnMovie(ArrayList<Movie> movies) {
 
+        ArrayList<Boolean> confirmation = new ArrayList<>();
         for(Movie movie : movies) {
-            movie.markAsAvaible(); // Si la pelicula estaba rentada, se devuelve.
+           boolean c = movie.markAsAvaible(); // Cambiamos el estado de la pelicula (se devuelve).
+           confirmation.add(c); 
         }
+
+        customer.chancgeCustomerState(); // Customer inactivo.
+        return confirmation;
     }
 
 }

@@ -29,7 +29,7 @@ public class Store {
     // Setters
 
     public void registerMovie(Movie movie) {
-
+        
     }
 
     public void registerCustomer(Customer customer) {
@@ -40,9 +40,14 @@ public class Store {
 
     }
 
-    public void updateRentalPrice() {
+    public void updateCurrentRentalPrice(float newPrice) {
 
+        if ((0 < newPrice) && (newPrice <= 100)) {
+            
+            currentRentalPrice = newPrice; // Actualizamos el precio
+        }
     }
+    
 
     // Getters
     public String consultStoreName() {

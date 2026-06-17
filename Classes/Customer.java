@@ -3,7 +3,7 @@ public class Customer {
     // Atributes
     private String customerName;
     private String customerId;
-    private boolean customerstate;
+    private boolean customerState = false;
 
     // Constuctor
     Customer(String customerName, String customerId) {
@@ -28,11 +28,21 @@ public class Customer {
 
     public boolean getCustomerState() {
 
-        return customerstate;
+        return customerState;
 
     }
 
+    public void chancgeCustomerState() {
 
-    // Metodo para modificar el customerState. Cuando se registra al iniciar el programa, debe cambiarse a true.
+        if (customerState == false) {
+            
+            customerState = true;
+        }
+
+        else {
+            customerState = false;
+        }
+    }
+    // Metodo para modificar el customerState. Cuando se renta una pelicula a su nombre, debe cambiarse a true.
 
 }
