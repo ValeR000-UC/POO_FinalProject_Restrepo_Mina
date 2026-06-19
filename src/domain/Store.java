@@ -1,10 +1,14 @@
+package domain;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Store {
+public class Store implements Serializable {
+    private static final long serialVersionUID = 1L;
     
     // Atributes
     private String name;
     private float currentRentalPrice;
+
     private ArrayList<Movie> movies;
     private ArrayList<Customer> customers;
     private ArrayList<Rental> rentals;
@@ -107,6 +111,9 @@ public class Store {
             if (genreId.equals(genre.getGenreId())) {
                 
                 return genre;    
+            }
+            else{
+                return null;
             }
 
        }

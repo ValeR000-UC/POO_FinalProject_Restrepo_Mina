@@ -1,9 +1,13 @@
-public class Genre {
+package domain;
+import java.io.Serializable;
+
+public class Genre implements Serializable { 
+    private static final long serialVersionUID = 1L;
 
     private String genreName;
     private String genreId;
 
-    Genre(String genreName, String genreId) {
+    public Genre(String genreName, String genreId) {
 
         this.genreName = genreName;
         this.genreId = genreId;

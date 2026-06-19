@@ -1,6 +1,9 @@
+package domain;
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Rental {
+public class Rental implements Serializable {
+    private static final long serialVersionUID = 1L;
     
     // Atributes
     private ArrayList<Movie> rentedMovies = new ArrayList<>();
