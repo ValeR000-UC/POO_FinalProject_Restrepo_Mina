@@ -491,12 +491,12 @@ public class MainMenu {
                 ui.showText("No se encontro ninguna renta con el ID: " + rentalId);
             }
 
-            else if(rental.rentalState() == false){ // Para saber si esta renta ya se desactivo.
+            else if(rental.getRentalState() == false){ // Para saber si esta renta ya se desactivo.
 
                 ui.showText("La renta: " + rental.getRentalId() + ", ya se encuentra desactivada.");
             }
 
-        } while (rental == null || rental.rentalState() == false);
+        } while (rental == null || rental.getRentalState() == false);
         
         rental.processReturnMovie(rental.consultRentedMovies());
 

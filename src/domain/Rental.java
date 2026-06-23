@@ -78,7 +78,7 @@ public class Rental implements Serializable {
             movie.markAsRented(); // Cambiamos el estado de la pelicula (se renta).
         }
 
-        customer.chancgeCustomerState(); // Customer activo (No puede rentar).
+        customer.changeCustomerState(); // Customer activo (No puede rentar).
     }
 
     private void returnMovie(ArrayList<Movie> movies) {
@@ -87,7 +87,7 @@ public class Rental implements Serializable {
            movie.markAsAvaible(); // Cambiamos el estado de la pelicula (se devuelve)
         }
 
-        customer.chancgeCustomerState(); // Customer inactivo (Puede rentar).
+        customer.changeCustomerState(); // Customer inactivo (Puede rentar).
     }
 
 }

@@ -16,14 +16,18 @@ public class Store implements Serializable {
 
     // Constructor
     public Store(
-    String name, float currentRentalPrice, ArrayList<Movie> movies, 
+    String name, int currentRentalPrice, ArrayList<Movie> movies, 
     ArrayList<Customer> customers, 
-    ArrayList<Rental> rentals, ArrayList<Genre> genres
+    ArrayList<Rental> rentals, ArrayList<Genre> genres, User user
     ) {
 
         this.name = name; 
         this.user = user;
         this.currentRentalPrice = currentRentalPrice;
+        this.movies = movies;
+        this.customers = customers;
+        this.rentals = rentals;
+        this.genres = genres;
 
     }
 
