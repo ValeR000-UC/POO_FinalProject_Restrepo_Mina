@@ -10,7 +10,7 @@ public class Customer implements Serializable {
     private boolean customerState = false;
 
     // Constuctor
-    Customer(String customerName, String customerId) {
+    public Customer(String customerName, String customerId) {
 
         this.customerName = customerName;
         this.customerId = customerId;
@@ -36,7 +36,7 @@ public class Customer implements Serializable {
 
     }
 
-    public void chancgeCustomerState() {
+    public void changeCustomerState() {
 
         if (customerState == false) {
             

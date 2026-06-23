@@ -15,7 +15,7 @@ public class Store implements Serializable {
     private ArrayList<Genre> genres;
 
     // Constructor
-    Store(
+    public Store(
     String name, float currentRentalPrice, ArrayList<Movie> movies, 
     ArrayList<Customer> customers, 
     ArrayList<Rental> rentals, ArrayList<Genre> genres
@@ -112,12 +112,7 @@ public class Store implements Serializable {
                 
                 return genre;    
             }
-            else{
-                return null;
-            }
-
        }
-
        return null;
     }
 
@@ -243,7 +238,7 @@ public class Store implements Serializable {
 
         for(Rental rental : rentals) {
 
-            if (rental.rentalState() == true) { // Preguntar si rental esta activa
+            if (rental.getRentalState() == true) { // Preguntar si rental esta activa
                 busqueda.add(rental); // Agregar a la lista.
                 
             }
@@ -259,7 +254,7 @@ public class Store implements Serializable {
 
         for(Rental rental : rentals) {
 
-            if (rental.rentalState() == false) { // Preguntar si rental NO esta activa
+            if (rental.getRentalState() == false) { // Preguntar si rental NO esta activa
                 busqueda.add(rental); // Agregar a la lista.
                 
             }

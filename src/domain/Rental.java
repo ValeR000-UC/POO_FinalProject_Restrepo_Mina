@@ -15,7 +15,7 @@ public class Rental implements Serializable {
     private float rentalCost;
 
     // Constructor
-    Rental(ArrayList<Movie> rentedMovies, User user, Customer customer, String rentalId, int rentalDays) {
+    public Rental(ArrayList<Movie> rentedMovies, User user, Customer customer, String rentalId, int rentalDays) {
 
         this.rentedMovies = rentedMovies;
         this.user = user;
@@ -49,7 +49,7 @@ public class Rental implements Serializable {
         return rentalId;
     }
 
-    public boolean rentalState() {
+    public boolean getRentalState() {
         return rentalActive;
     }
 
@@ -82,7 +82,7 @@ public class Rental implements Serializable {
             confirmation.add(c); // Se guarda el estado de la renta (si se pudo rentar o no) para imprimir en el main.
         }
 
-        customer.chancgeCustomerState(); // Customer activo.
+        customer.changeCustomerState(); // Customer activo.
         return confirmation; // Retornamos la lista de estados.
     }
 
@@ -94,7 +94,7 @@ public class Rental implements Serializable {
            confirmation.add(c); 
         }
 
-        customer.chancgeCustomerState(); // Customer inactivo.
+        customer.changeCustomerState(); // Customer inactivo.
         return confirmation;
     }
 
