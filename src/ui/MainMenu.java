@@ -94,7 +94,7 @@ public class MainMenu {
         return option;
     }
 
-    public int movies() {
+    private int movies() {
 
         ui.showText(
 
@@ -161,13 +161,20 @@ public class MainMenu {
 
             case 7:
                 processRegisterMovie();
+
+            case 8:
+                processRemoveMovie();
+            
+            case 0:
+                break;
         
             default:
-                break;
+                ui.showText("Opcion invalida!");
+                return;
         }
     }
 
-    private void print(ArrayList<Movie> movies) {
+    private void printM(ArrayList<Movie> movies) {
 
         if (movies == null) {
             
@@ -182,6 +189,38 @@ public class MainMenu {
                 
                 ui.newLine(); // Salto de linea.
             }
+        }
+    }
+
+    private void printC(ArrayList<Customer> customers) {
+
+        if (customers == null) {
+            
+            ui.showText("No hemos encontrado nada en la base de datos.");
+        }
+
+        for(int i = 0 ; i < customers.size() ; i++) {
+
+            ui.showText(customers.get(i).getCustomerName() + "\t");
+
+            if ((i + 1) % 4 == 0) {
+                
+                ui.newLine(); // Salto de linea.
+            }
+        }
+    }
+
+    private void processRemoveMovie() {
+
+        String movieId = ui.inputText("ID de la pelicula: ");
+        boolean confirmation = store.deleteMovie(movieId);
+
+        if(confirmation) {
+            ui.showText("Se ha eliminado correctamente!");
+        }
+
+        else {
+            ui.showText("Proceso fallido! La pelicula se encuentra rentada.");
         }
     }
 
@@ -207,32 +246,51 @@ public class MainMenu {
         } while (genre == null);
 
         String movieId;
+        boolean flag;
         
         do {
-            
-            movieId = ui.inputText("ID de la pelicula: "); 
+
+            flag = false; // Reinicio de bandera.
+            movieId = ui.inputText("ID de la pelicula: "); // Parametro para crear objeto Movie
+            Movie m = store.findMovieById(movieId); // Para verificar que no exista.
 
             if(movieId.length() <= 0 || movieId.length() > 5) {
-                ui.showText("Dato invalido! Min: 1 | Max: 5"); // Si el genero NO existe.
+                ui.showText("Dato invalido! Min: 1 | Max: 5"); 
+                flag = true;
+            }
+            
+            else if(m != null) { // Verificamos si encontro una pelicula con el mismo id.
+
+                ui.showText("El ID: " + movieId + " ya se encuentra registrado.");
+                flag = true;
             }
 
-        } while (movieId.length() > 5);
+        } while (flag);
 
         Movie movie = new Movie(movieName, movieId, year, director, genre); // Creamos el objeto.
-        store.registerMovie(movie); // Registramos la pelicula.
+        boolean confirmation = store.registerMovie(movie); // Registramos la pelicula.
+        
+        if (confirmation) {
+            ui.showText("Registro exitoso!");
+        }
+
+        else {
+            ui.showText("Resgistro fallido.");
+        }
     }
+
 
 
     private void printAllMovies() {
 
         ArrayList<Movie> movies = store.consultAllMovies(); // Traemos todas las peliculas.
-        print(movies);
+        printM(movies);
     }
 
-    public void printUnavaibleMovies() {
+    private void printUnavaibleMovies() {
 
         ArrayList<Movie> movies = store.findUnavaibleMovies();
-        print(movies);
+        printM(movies);
     }
 
     private void searchMovieById() {
@@ -254,24 +312,24 @@ public class MainMenu {
     private void searchMovieByName() {
 
         ArrayList<Movie> movies = store.findMoviesByName(null);
-        print(movies);
+        printM(movies);
 
     }
 
     private void printAvaibleMovies() {
 
         ArrayList<Movie> movies = store.findAvaibleMovies();
-        print(movies);
+        printM(movies);
     }
 
     private void searchMovieByGenre() {
 
         String idGenre = ui.inputText("Ingrese el ID del genero: ");
         ArrayList<Movie> movies = store.findMoviesByGenre(idGenre);
-        print(movies);
+        printM(movies);
     }
 
-    public int customers() {
+    private int customers() {
 
         ui.showText(
 
@@ -308,7 +366,25 @@ public class MainMenu {
         return option;
     }
 
-    public int rentals() {
+    private void printAllCustomers() {
+
+        ArrayList<Customer> customers = store.consultAllCustomers();
+        printC(customers);
+    }
+
+    private void printActiveCustomers() {
+
+        ArrayList<Customer> customers = store.findActiveCustomers();
+        printC(customers);
+    }
+
+    private void printInactiveCustomers() {
+
+        ArrayList<Customer> customers = store.findInactiveCustomers();
+        printC(customers);
+    }
+
+    private int rentals() {
 
         ui.showText(
 
@@ -351,7 +427,7 @@ public class MainMenu {
 
     }
 
-    public int settings() {
+    private int settings() {
 
         ui.showText(
 

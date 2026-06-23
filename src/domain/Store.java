@@ -39,7 +39,7 @@ public class Store implements Serializable {
         }
         
         if (!flag) {
-            
+                       
             movies.add(movie); // Se agrega la pelicula.
             return true; // Para imprimir en el main.
         }
@@ -376,15 +376,24 @@ public class Store implements Serializable {
     }
 
     // Delete
-    public void deleteMovie(String movieId) {
+    public boolean deleteMovie(String movieId) {
+
+        boolean flag = false;
 
         for (Movie movie : movies) {
             
             if (movieId.equals(movie.getMovieId())) {
                 
-                movies.remove(movie); // Eliminamos la pelicula.
+                if (!movie.isMovieRented()) {
+                    
+                    movies.remove(movie); // Eliminamos la pelicula.
+                    flag = true;
+                    break;
+                }               
             }
         }
+
+        return flag; // Para imprimir en el main.
     }
 
     public void deleteRental(String rentalId) {
@@ -408,5 +417,4 @@ public class Store implements Serializable {
             }
         }
     }
-
 }
