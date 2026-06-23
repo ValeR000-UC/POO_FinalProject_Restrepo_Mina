@@ -97,7 +97,7 @@ public class Store implements Serializable {
         if (!flag) {
             
             customers.add(customer); // Se agrega el customer.
-            return true;
+            return true; // Operacion exitosa.
         }        
 
         else {
@@ -130,12 +130,17 @@ public class Store implements Serializable {
         }
     }
 
-    public void updateCurrentRentalPrice(int newPrice) {
+    public boolean updateCurrentRentalPrice(int newPrice) {
+
+        boolean flag = false;
 
         if ((0 < newPrice) && (newPrice <= 100)) {
             
             currentRentalPrice = newPrice; // Actualizamos el precio
+            flag = true; // Alzamos la bandera.
         }
+
+        return flag;
     }
     
 
@@ -403,25 +408,43 @@ public class Store implements Serializable {
         return flag; // Para imprimir en el main.
     }
 
-    public void deleteRental(String rentalId) {
+    public boolean deleteRental(String rentalId) {
+
+        boolean flag = false;
 
         for (Rental rental : rentals) {
             
             if (rentalId.equals(rental.getRentalId())) {
-                
-                rentals.remove(rental); // Eliminamos la renta.
+
+                if (!rental.getRentalState()) {
+                    
+                    rentals.remove(rental); // Eliminamos la renta.
+                    flag = true;
+                    break;
+                }
             }
         }
+
+        return flag; // Para imprimir en el main.
     }
 
-    public void deleteCustomer(String customerId) {
+    public boolean deleteCustomer(String customerId) {
+
+        boolean flag = false;
 
         for (Customer customer : customers) {
             
             if (customerId.equals(customer.getCustomerId())) {
-                
-                customers.remove(customer); // Eliminamos el costumer.
+
+                if (!customer.getCustomerState()) { // Preguntamos si tiene una renta a su nombre
+
+                    customers.remove(customer); // Eliminamos el costumer.
+                    flag = true; // Alzamos la bandera.
+                    break; // Se termina la busqueda.                    
+                }
             }
         }
+
+        return flag; // Para imprimir en el main. 
     }
 }
