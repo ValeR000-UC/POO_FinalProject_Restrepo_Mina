@@ -7,44 +7,122 @@ public class Store implements Serializable {
     
     // Atributes
     private String name;
-    private float currentRentalPrice;
-
-    private ArrayList<Movie> movies;
-    private ArrayList<Customer> customers;
-    private ArrayList<Rental> rentals;
-    private ArrayList<Genre> genres;
+    private int currentRentalPrice;
+    private ArrayList<Movie> movies = null;
+    private ArrayList<Customer> customers = null;
+    private ArrayList<Rental> rentals = null;
+    private ArrayList<Genre> genres = null;
+    private User user;
 
     // Constructor
-    Store(
-    String name, float currentRentalPrice, ArrayList<Movie> movies, 
-    ArrayList<Customer> customers, 
-    ArrayList<Rental> rentals, ArrayList<Genre> genres
-    ) {
+    public Store(String name, User user, int currentRentalPrice) {
 
         this.name = name; 
+        this.user = user;
         this.currentRentalPrice = currentRentalPrice;
-        this.movies = movies;
-        this.customers = customers;
-        this.rentals = rentals;
-        this.genres = genres;
 
     }
 
     // Setters
 
-    public void registerMovie(Movie movie) {
+    public boolean registerMovie(Movie movie) {
+
+        boolean flag = false;
+
+        for (Movie m : movies) {
+
+            if ((m.getMovieId().equals(movie.getMovieId()))) {
+                flag = true; // Alzamos la bandera! No se puede agregar
+                break; // Detenemos la iteracion.
+            }
+            
+        }
         
+        if (!flag) {
+            
+            movies.add(movie); // Se agrega la pelicula.
+            return true; // Para imprimir en el main.
+        }
+
+        else {
+            return false; // Para imprimir en el main.
+        }
     }
 
-    public void registerCustomer(Customer customer) {
+    public boolean registerGenre(Genre genre) {
+
+        boolean flag = false;
+
+        for (Genre g : genres) {
+
+            if ((g.getGenreId().toLowerCase().equals(genre.getGenreId().toLowerCase()))) {
+                flag = true; // Alzamos la bandera! No se puede agregar
+                break; // Detenemos la iteracion.
+            }
+        }
+        
+        if (!flag) {
+            
+            genres.add(genre); // Se agrega la pelicula.
+            return true; // Para imprimir en el main.
+        }
+
+        else {
+            return false; // Para imprimir en el main.
+        }
 
     }
 
-    public void registerRental(Rental rental) {
+    public boolean registerCustomer(Customer customer) {
+
+    boolean flag = false;
+
+        for (Customer c : customers) {
+
+            if ((c.getCustomerId().equals(customer.getCustomerId()))) {
+                flag = true; // Alzamos la bandera! No se puede agregar
+                break; // Detenemos la iteracion.
+            }
+            
+        }
+        
+        if (!flag) {
+            
+            customers.add(customer); // Se agrega el customer.
+            return true;
+        }        
+
+        else {
+            return false;
+        }
 
     }
 
-    public void updateCurrentRentalPrice(float newPrice) {
+    public boolean registerRental(Rental rental) {
+
+        boolean flag = false;
+
+        for (Rental r : rentals) {
+
+            if ((r.getRentalId().equals(rental.getRentalId()))) {
+                flag = true; // Alzamos la bandera! No se puede agregar
+                break; // Detenemos la iteracion.
+            }
+            
+        }
+        
+        if (!flag) {
+            
+            rentals.add(rental); // Se agrega la renta.
+            return true;
+        }
+
+        else {
+            return false;
+        }
+    }
+
+    public void updateCurrentRentalPrice(int newPrice) {
 
         if ((0 < newPrice) && (newPrice <= 100)) {
             
@@ -58,8 +136,9 @@ public class Store implements Serializable {
         return name;
     }
 
-    public ArrayList<Genre> consultAllGenres() {
-        return genres;
+    public User getUser() {
+        
+        return user;
     }
 
     public Movie findMovieById(String movieId) {
@@ -108,14 +187,10 @@ public class Store implements Serializable {
         
         for(Genre genre : genres) {
 
-            if (genreId.equals(genre.getGenreId())) {
+            if (genreId.toLowerCase().equals(genre.getGenreId().toLowerCase())) {
                 
                 return genre;    
             }
-            else{
-                return null;
-            }
-
        }
 
        return null;
@@ -127,12 +202,10 @@ public class Store implements Serializable {
 
         for(Movie movie : movies) {
 
-            if (movie.getMovieName().contains(movieName)) { // Preguntamos si la pelicula contiene el nombre ingresado 
+            if (movie.getMovieName().toLowerCase().contains(movieName.toLowerCase())) { // Preguntamos si la pelicula contiene el nombre ingresado 
                 
                 busqueda.add(movie); // La agregamos a la lista.
-                
             }
-
        }
 
        return busqueda; // Retornamos la lista.
@@ -144,17 +217,14 @@ public class Store implements Serializable {
 
         for(Genre genre : genres) {
 
-            if (genre.getGenreName().contains(genreName)) { // Preguntamos si nombre del genero contiene el nombre ingresado 
+            if (genre.getGenreName().toLowerCase().contains(genreName.toLowerCase())) { // Preguntamos si nombre del genero contiene el nombre ingresado 
                 
                 busqueda.add(genre); // La agregamos a la lista.
-                
             }
-
        }
 
        return busqueda; // Retornamos la lista.
     }
-
 
     public ArrayList<Customer> findCustomersByName(String customerName) {
         
@@ -162,7 +232,7 @@ public class Store implements Serializable {
 
         for(Customer customer : customers) {
 
-            if (customer.getCustomerName().contains(customerName)) { // Preguntar si el nombre el customer contiene algo de lo ingresado
+            if (customer.getCustomerName().toLowerCase().contains(customerName.toLowerCase())) { // Preguntar si el nombre el customer contiene algo de lo ingresado
                 busqueda.add(customer); // Lo agregamos a la lista.
                 
             }
@@ -269,13 +339,13 @@ public class Store implements Serializable {
        return busqueda; // Retornamos la lista.
     }
 
-    public ArrayList<Movie> findMoviesByGenre(Genre genre) {
+    public ArrayList<Movie> findMoviesByGenre(String genreId) {
         
          ArrayList<Movie> busqueda = new ArrayList<>();
 
         for(Movie movie : movies) {
 
-            if (movie.getMovieGenre().equals(genre)) {
+            if (movie.getMovieGenre().getGenreId().toLowerCase().equals(genreId.toLowerCase())) {
                 
                 busqueda.add(movie);
             }
@@ -297,21 +367,46 @@ public class Store implements Serializable {
         return rentals;
     }
 
-    public float consultRentalPrice() {
+    public ArrayList<Genre> consultAllGenres() {
+        return genres;
+    }
+
+    public int consultRentalPrice() {
         return currentRentalPrice;
     }
 
     // Delete
     public void deleteMovie(String movieId) {
 
+        for (Movie movie : movies) {
+            
+            if (movieId.equals(movie.getMovieId())) {
+                
+                movies.remove(movie); // Eliminamos la pelicula.
+            }
+        }
     }
 
     public void deleteRental(String rentalId) {
 
+        for (Rental rental : rentals) {
+            
+            if (rentalId.equals(rental.getRentalId())) {
+                
+                rentals.remove(rental); // Eliminamos la renta.
+            }
+        }
     }
 
     public void deleteCustomer(String customerId) {
 
+        for (Customer customer : customers) {
+            
+            if (customerId.equals(customer.getCustomerId())) {
+                
+                customers.remove(customer); // Eliminamos el costumer.
+            }
+        }
     }
 
 }

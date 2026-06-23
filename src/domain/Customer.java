@@ -7,10 +7,10 @@ public class Customer implements Serializable {
     // Atributes
     private String customerName;
     private String customerId;
-    private boolean customerState = false;
+    private boolean customerState = false; // Se crea inactivo (sin una renta) por defecto.
 
     // Constuctor
-    Customer(String customerName, String customerId) {
+    public Customer(String customerName, String customerId) {
 
         this.customerName = customerName;
         this.customerId = customerId;

@@ -12,10 +12,10 @@ public class Rental implements Serializable {
     private String rentalId;
     private boolean rentalActive = true; // Se crea en activa por defecto.
     private int rentalDays;
-    private float rentalCost;
+    private int rentalCost;
 
     // Constructor
-    Rental(ArrayList<Movie> rentedMovies, User user, Customer customer, String rentalId, int rentalDays) {
+    public Rental(ArrayList<Movie> rentedMovies, User user, Customer customer, String rentalId, int rentalDays) {
 
         this.rentedMovies = rentedMovies;
         this.user = user;
@@ -25,24 +25,22 @@ public class Rental implements Serializable {
 
     }
 
-    private void calculateRentalCost(float currentPrice) { // Metodo que calcula el costo de la renta.
+    private void calculateRentalCost(int currentPrice) { // Metodo que calcula el costo de la renta.
         
         rentalCost = (rentalDays * currentPrice) * consultRentedMovies().size();
         
     }
 
-    public ArrayList<Boolean> processRentMovie(float currentPrice, ArrayList<Movie> movies) {
+    public void processRentMovie(int currentPrice, ArrayList<Movie> movies) {
 
         calculateRentalCost(currentPrice); // Calculamos el costo de la renta de las peliculas.
-        ArrayList<Boolean> activeRentals = rent(movies); // Guardamos los estados de las peliculas.
-        return activeRentals; // Se retornan los estados de las peliculas. 
-
+        rent(movies); // Se hace la renta.
+    
     }
 
-    public ArrayList<Boolean> processReturnMovie(ArrayList<Movie> movies) {
+    public void processReturnMovie(ArrayList<Movie> movies) {
 
-        ArrayList<Boolean> inactiveRentals = returnMovie(movies); // Guardamos los estados de las peliculas.
-        return inactiveRentals; // Se retornan los estados de las peliculas.
+        returnMovie(movies); // Se devuelve la pelicula.
     }
 
     public String getRentalId() {
@@ -53,7 +51,7 @@ public class Rental implements Serializable {
         return rentalActive;
     }
 
-    public float getRentalCost() {
+    public int getRentalCost() {
         return rentalCost;
     }
 
@@ -74,28 +72,22 @@ public class Rental implements Serializable {
     }
 
     // Setters
-    private ArrayList<Boolean> rent(ArrayList<Movie> movies) {
+    private void rent(ArrayList<Movie> movies) {
 
-        ArrayList<Boolean> confirmation = new ArrayList<>(); // Aqui guardamos si se renta o no la pelicula.
         for(Movie movie : movies) {
-            boolean c = movie.markAsRented(); // Cambiamos el estado de la pelicula (se renta).
-            confirmation.add(c); // Se guarda el estado de la renta (si se pudo rentar o no) para imprimir en el main.
+            movie.markAsRented(); // Cambiamos el estado de la pelicula (se renta).
         }
 
-        customer.chancgeCustomerState(); // Customer activo.
-        return confirmation; // Retornamos la lista de estados.
+        customer.chancgeCustomerState(); // Customer activo (No puede rentar).
     }
 
-    private ArrayList<Boolean> returnMovie(ArrayList<Movie> movies) {
+    private void returnMovie(ArrayList<Movie> movies) {
 
-        ArrayList<Boolean> confirmation = new ArrayList<>();
         for(Movie movie : movies) {
-           boolean c = movie.markAsAvaible(); // Cambiamos el estado de la pelicula (se devuelve).
-           confirmation.add(c); 
+           movie.markAsAvaible(); // Cambiamos el estado de la pelicula (se devuelve)
         }
 
-        customer.chancgeCustomerState(); // Customer inactivo.
-        return confirmation;
+        customer.chancgeCustomerState(); // Customer inactivo (Puede rentar).
     }
 
 }

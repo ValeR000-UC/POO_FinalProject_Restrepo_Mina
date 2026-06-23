@@ -55,30 +55,19 @@ public class Movie implements Serializable { // implements serializable se usa p
         return movieRented;
     }
 
-    public boolean markAsRented() {
+    public void markAsRented() {
 
         if (isMovieRented() == false) { // Preguntamos si la pelicula no esta rentada, para poder rentarla.
 
                 movieRented = true; // Queda rentada.
-                return true; // Avisamos en el main que todo salio correcto.
-
             }
-
-        return false; // Avisamos en el main que NO se pudo rentar la pelicula.
     }
 
-    public boolean markAsAvaible() {
+    public void markAsAvaible() {
 
         if (isMovieRented() == true) { // Preguntamos si la pelicula esta rentada, para poder devolverla.
 
                 movieRented = false; // Queda disponible.
-                return true; // Avisamos en el main que todo salio correcto.
-
-
-                // Toca corregir este evento porque en la clase rental, 
-                // Se supone que dentro del for va a estar retornando booleanos.
             }
-
-        return false; // Avisamos en el main que NO se pudo rentar la pelicula. 
     }
 }
