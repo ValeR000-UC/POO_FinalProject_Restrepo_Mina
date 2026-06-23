@@ -2,6 +2,9 @@ package domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+//Represents a rental transaction. Links a customer and a user to a list of rented movies. 
+//Handles rental cost calculation, movie status changes and customer state updates.
+
 public class Rental implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -89,5 +92,12 @@ public class Rental implements Serializable {
 
         customer.changeCustomerState(); // Customer inactivo (Puede rentar).
     }
+// Agregar estos dos setters en Rental.java
+    public void setRentalState(boolean state) {
+        rentalActive = state; // restaura el estado desde el CSV
+    }
 
+    public void setRentalCost(int cost) {
+        rentalCost = cost; // restaura el costo fijo desde el CSV, no recalcula
+    }
 }

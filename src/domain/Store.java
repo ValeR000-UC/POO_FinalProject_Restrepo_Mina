@@ -2,6 +2,9 @@ package domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+//Central class of the system. Acts as the main data container, holding all collections of movies, customers, rentals and genres. 
+//Provides all registration, search, listing and deletion operations used throughout the application.
+
 public class Store implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -20,7 +23,6 @@ public class Store implements Serializable {
     ArrayList<Customer> customers, 
     ArrayList<Rental> rentals, ArrayList<Genre> genres, User user
     ) {
-
         this.name = name; 
         this.user = user;
         this.currentRentalPrice = currentRentalPrice;
@@ -28,78 +30,64 @@ public class Store implements Serializable {
         this.customers = customers;
         this.rentals = rentals;
         this.genres = genres;
-
     }
 
     // Setters
 
     public boolean registerMovie(Movie movie) {
-
         boolean flag = false;
 
         for (Movie m : movies) {
 
             if ((m.getMovieId().equals(movie.getMovieId()))) {
-                flag = true; // Alzamos la bandera! No se puede agregar
-                break; // Detenemos la iteracion.
+                flag = true; // duplicate found, cannot register
+                break; // stops iteration, no need to keep checking
             }
-            
         }
-        
         if (!flag) {
                        
-            movies.add(movie); // Se agrega la pelicula.
-            return true; // Para imprimir en el main.
+            movies.add(movie);
+            return true; // UI uses this to print success or failure message
         }
-
         else {
             return false; // Para imprimir en el main.
         }
     }
-
     public boolean registerGenre(Genre genre) {
 
         boolean flag = false;
 
         for (Genre g : genres) {
 
+            //case insensitive comparison to avoid duplicate genres with different casing
             if ((g.getGenreId().toLowerCase().equals(genre.getGenreId().toLowerCase()))) {
-                flag = true; // Alzamos la bandera! No se puede agregar
-                break; // Detenemos la iteracion.
+            flag = true;
+                flag = true;
+                break;
             }
         }
-        
         if (!flag) {
             
-            genres.add(genre); // Se agrega la pelicula.
-            return true; // Para imprimir en el main.
+            genres.add(genre); 
+            return true;
         }
-
         else {
-            return false; // Para imprimir en el main.
-        }
-
+            return false; }
     }
-
     public boolean registerCustomer(Customer customer) {
 
     boolean flag = false;
 
         for (Customer c : customers) {
-
             if ((c.getCustomerId().equals(customer.getCustomerId()))) {
                 flag = true; // Alzamos la bandera! No se puede agregar
                 break; // Detenemos la iteracion.
             }
-            
         }
-        
         if (!flag) {
-            
             customers.add(customer); // Se agrega el customer.
             return true;
         }        
-
         else {
             return false;
         }
@@ -423,5 +411,55 @@ public class Store implements Serializable {
                 customers.remove(customer); // Eliminamos el costumer.
             }
         }
+    }
+//COSO QUE RECOMIENDA
+// Recomienda peliculas disponibles basandose en el genero mas rentado del sistema
+    public ArrayList<Movie> recommendMovies() {
+
+        // 1. Contar cuantas veces aparece cada genero en todas las rentas
+        ArrayList<String> genreIds = new ArrayList<>();
+        ArrayList<Integer> genreCounts = new ArrayList<>();
+
+        for (Rental rental : rentals) {
+            for (Movie movie : rental.consultRentedMovies()) {
+
+                String genreId = movie.getMovieGenre().getGenreId();
+                int index = genreIds.indexOf(genreId);
+
+                if (index == -1) {
+                    // genero nuevo, lo agrega
+                    genreIds.add(genreId);
+                    genreCounts.add(1);
+                } else {
+                    // genero ya existe, suma 1
+                    genreCounts.set(index, genreCounts.get(index) + 1);
+                }
+            }
+        }
+
+        // 2. Si no hay rentas, no hay recomendacion
+        if (genreIds.isEmpty()) {
+            return new ArrayList<>();
+        }
+
+        // 3. Encontrar el genero mas rentado
+        int maxIndex = 0;
+        for (int i = 1; i < genreCounts.size(); i++) {
+            if (genreCounts.get(i) > genreCounts.get(maxIndex)) {
+                maxIndex = i;
+            }
+        }
+
+        String mostRentedGenreId = genreIds.get(maxIndex);
+
+        // 4. Retornar peliculas disponibles de ese genero
+        ArrayList<Movie> recommendations = new ArrayList<>();
+        for (Movie movie : movies) {
+            if (movie.getMovieGenre().getGenreId().equals(mostRentedGenreId) && !movie.isMovieRented()) {
+                recommendations.add(movie);
+            }
+        }
+
+        return recommendations;
     }
 }

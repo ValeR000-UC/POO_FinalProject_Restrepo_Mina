@@ -1,9 +1,8 @@
 package data;
-import java.io.*; //el .io. en java corresponde a todas las herramientas que sirven para leer y cargar los daticos
+import java.io.*;
 
-//Nota: como store tiene todas las listas con la info que recolecta en consola entonces nosotros NO vamos a hacer como hizo cesitar
-//ni como normalmente se hace por que como tenemos una clase que ya lo tiene todo, lo que vamos a hacer es estar cargando y guardando
-//toda esa clase. eso va a ser la persistencia de archivos
+//Unlike typical persistence approaches, this system serializes the complete Store object rather than individual entities, since Store already contains all system collections. 
+//Handles binary persistence using ObjectOutputStream and ObjectInputStream, generating a single store.dat file that preserves the entire application state.
 
 public class DataManager{
     public static <T extends Serializable> boolean saveObject(String filename, T object) {

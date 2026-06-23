@@ -1,6 +1,9 @@
 package domain;
 import java.io.Serializable;
 
+//Represents a store customer. Stores the customer name, ID and activity state. 
+//A customer is considered active when they have an ongoing rental.
+
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
     

@@ -1,6 +1,8 @@
 package domain;
 import java.io.Serializable;
 
+//Represents the system operator. Stores the username, ID and active state. 
+//Associated with rentals to register who processed each transaction.
 public class User implements Serializable {
     private static final long serialVersionUID = 1L;
     
@@ -9,10 +11,11 @@ public class User implements Serializable {
     private boolean userState = true;
 
     // Constructor
-    public User(String userName, String userId) { //explicar pq puse todos los constructores public
+    public User(String userName, String userId, boolean userState) { //explicar pq puse todos los constructores public
 
         this.userName = userName;
         this.userId = userId;
+        this.userState = userState;
 
     }
 

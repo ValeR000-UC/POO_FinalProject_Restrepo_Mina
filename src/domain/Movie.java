@@ -1,6 +1,9 @@
 package domain;
 import java.io.Serializable;
 
+//Represents a movie in the store.
+// Holds attributes such as name, ID, year, director and genre. Tracks whether the movie is currently rented or available.
+
 public class Movie implements Serializable { // implements serializable se usa para que todas las clases se vuelvan bytes para guardarlas en archivos Serializar = convertir un objeto en bytes para poder guardarlo
     private static final long serialVersionUID = 1L; //PREGUNTARLE A CESAR POR QUE NO ESTOY SEGURA
     //Esa línea le pone un número de versión a la clase para que Java sepa si un objeto guardado 
