@@ -9,7 +9,7 @@ public class User implements Serializable {
     private boolean userState = true;
 
     // Constructor
-    public User(String userName, String userId) {
+    public User(String userName, String userId) { //explicar pq puse todos los constructores public
 
         this.userName = userName;
         this.userId = userId;

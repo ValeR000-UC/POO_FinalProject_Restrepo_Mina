@@ -15,7 +15,11 @@ public class Store implements Serializable {
     private User user;
 
     // Constructor
-    public Store(String name, User user, int currentRentalPrice) {
+    public Store(
+    String name, float currentRentalPrice, ArrayList<Movie> movies, 
+    ArrayList<Customer> customers, 
+    ArrayList<Rental> rentals, ArrayList<Genre> genres
+    ) {
 
         this.name = name; 
         this.user = user;
@@ -192,7 +196,6 @@ public class Store implements Serializable {
                 return genre;    
             }
        }
-
        return null;
     }
 
@@ -313,7 +316,7 @@ public class Store implements Serializable {
 
         for(Rental rental : rentals) {
 
-            if (rental.rentalState() == true) { // Preguntar si rental esta activa
+            if (rental.getRentalState() == true) { // Preguntar si rental esta activa
                 busqueda.add(rental); // Agregar a la lista.
                 
             }
@@ -329,7 +332,7 @@ public class Store implements Serializable {
 
         for(Rental rental : rentals) {
 
-            if (rental.rentalState() == false) { // Preguntar si rental NO esta activa
+            if (rental.getRentalState() == false) { // Preguntar si rental NO esta activa
                 busqueda.add(rental); // Agregar a la lista.
                 
             }

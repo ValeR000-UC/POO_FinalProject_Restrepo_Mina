@@ -36,7 +36,7 @@ public class Customer implements Serializable {
 
     }
 
-    public void chancgeCustomerState() {
+    public void changeCustomerState() {
 
         if (customerState == false) {
             

@@ -47,7 +47,7 @@ public class Rental implements Serializable {
         return rentalId;
     }
 
-    public boolean rentalState() {
+    public boolean getRentalState() {
         return rentalActive;
     }
 
