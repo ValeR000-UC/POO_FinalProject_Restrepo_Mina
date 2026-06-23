@@ -46,6 +46,7 @@ public class MainMenu {
                     do {
                         option2 = customers();
                         ui.newLine();
+                        customersMenu(option2);
                     } while (option2 != 0);
                     break;
 
@@ -53,12 +54,14 @@ public class MainMenu {
                     do {
                         option3 = rentals();
                         ui.newLine();
+                        rentalsMenu(option3);
                     } while (option3 != 0);                    
                     break;
 
                 case 4:
                     do {
                         option4 = settings();
+                        settingsMenu(option4);
                         ui.newLine();
                     } while (option4 != 0);
                     break;
@@ -152,18 +155,20 @@ public class MainMenu {
                 break;
 
             case 5:
-                searchMovieByName();
+                searchMoviesByName();
                 break;
 
             case 6:
-                searchMovieByGenre();
+                searchMoviesByGenre();
                 break;
 
             case 7:
                 processRegisterMovie();
+                break;
 
             case 8:
                 processRemoveMovie();
+                break;
             
             case 0:
                 break;
@@ -196,7 +201,7 @@ public class MainMenu {
 
         if (customers == null) {
             
-            ui.showText("No hemos encontrado nada en la base de datos.");
+            ui.showText("Error 200: No hemos encontrado nada en la base de datos.");
         }
 
         for(int i = 0 ; i < customers.size() ; i++) {
@@ -220,7 +225,7 @@ public class MainMenu {
         }
 
         else {
-            ui.showText("Proceso fallido! La pelicula se encuentra rentada.");
+            ui.showText("Error 302: Proceso fallido! La pelicula se encuentra rentada.");
         }
     }
 
@@ -255,13 +260,13 @@ public class MainMenu {
             Movie m = store.findMovieById(movieId); // Para verificar que no exista.
 
             if(movieId.length() <= 0 || movieId.length() > 5) {
-                ui.showText("Dato invalido! Min: 1 | Max: 5"); 
+                ui.showText("Error 202: Dato invalido! Min: 1 | Max: 5"); 
                 flag = true;
             }
             
             else if(m != null) { // Verificamos si encontro una pelicula con el mismo id.
 
-                ui.showText("El ID: " + movieId + " ya se encuentra registrado.");
+                ui.showText("Error 301: El ID: " + movieId + " ya se encuentra registrado.");
                 flag = true;
             }
 
@@ -275,11 +280,9 @@ public class MainMenu {
         }
 
         else {
-            ui.showText("Resgistro fallido.");
+            ui.showText("Error 305: Resgistro fallido.");
         }
     }
-
-
 
     private void printAllMovies() {
 
@@ -295,12 +298,12 @@ public class MainMenu {
 
     private void searchMovieById() {
 
-        String movieId = ui.inputText("Ingrese el ID de la pelicula: ");
+        String movieId = ui.inputText("ID de la pelicula: ");
         Movie movie = store.findMovieById(movieId);
 
         if (movie == null) {
             
-            ui.showText("La pelicula no se encuentra registrada en la base de datos.");
+            ui.showText("Error 200: La pelicula no se encuentra registrada en la base de datos.");
         }
 
         else {
@@ -309,7 +312,7 @@ public class MainMenu {
 
     }
 
-    private void searchMovieByName() {
+    private void searchMoviesByName() {
 
         ArrayList<Movie> movies = store.findMoviesByName(null);
         printM(movies);
@@ -322,7 +325,7 @@ public class MainMenu {
         printM(movies);
     }
 
-    private void searchMovieByGenre() {
+    private void searchMoviesByGenre() {
 
         String idGenre = ui.inputText("Ingrese el ID del genero: ");
         ArrayList<Movie> movies = store.findMoviesByGenre(idGenre);
@@ -366,6 +369,68 @@ public class MainMenu {
         return option;
     }
 
+    private void customersMenu(int option2) {
+
+        switch (option2) {
+            case 1:
+                printAllCustomers();
+                break;
+            
+            case 2:
+                printActiveCustomers();
+                break;
+
+            case 3:
+                printInactiveCustomers();
+                break;
+
+            case 4:
+                searchCustomerById();               
+                break;
+
+            case 5:
+                searchCustomersByName();
+                break;
+
+            case 6:
+                processRegisterCustomer();
+                break;
+
+            case 7:
+                processRemoveCustomer();
+                break;
+
+            case 0:
+                break;
+        
+            default:  
+                ui.showText("Opcion invalida!");
+                return;
+        }
+    }
+
+    private void searchCustomerById() {
+        
+        String customerId = ui.inputText("ID del cilente: ");
+        Customer customer = store.findCustomerById(customerId);
+
+        if (customer == null) {
+            
+            ui.showText("Error 200: El cliente no se encuentra registrado en la base de datos.");
+        }
+
+        else {
+            ui.showText("Resultado de busqueda: " + customer.getCustomerName());
+        }
+    }
+
+    private void searchCustomersByName() {
+
+        String name = ui.inputText("Nombre del cliente: ");
+        ArrayList<Customer> customer = store.findCustomersByName(name);
+        printC(customer);
+    }
+
     private void printAllCustomers() {
 
         ArrayList<Customer> customers = store.consultAllCustomers();
@@ -376,12 +441,78 @@ public class MainMenu {
 
         ArrayList<Customer> customers = store.findActiveCustomers();
         printC(customers);
+        
     }
 
     private void printInactiveCustomers() {
 
         ArrayList<Customer> customers = store.findInactiveCustomers();
         printC(customers);
+    }
+
+    private void processRegisterCustomer() {
+
+        String customerName = ui.inputText("Nombre del cliente: ");
+        String customerId;
+        boolean flag;
+
+        do {
+            
+            flag = false; // Reinicio.
+            customerId = ui.inputText("Cedula: ");
+
+            if (customerId.length() < 10 || customerId.length() > 10) {
+                
+                ui.showText("Error 300: La cedula debe tener 10 digitos.");
+                flag = true;
+            }
+
+        } while (flag);
+        
+        Customer customer = new Customer(customerName, customerId); // Creamos el objeto.
+        boolean confirmation = store.registerCustomer(customer);
+
+        if (confirmation) {
+            
+            ui.showText("Registro exitoso!");
+        }
+
+        else {
+            ui.showText("Error 305.");
+        }
+
+    }
+
+    private void processRemoveCustomer() {
+
+        String customerId = ui.inputText("Cedula del cliente: ");
+        boolean confirmation = store.deleteCustomer(customerId);
+
+        if (confirmation) {
+            ui.inputText("Operacion exitosa!");
+        }
+
+        else {           
+            ui.inputText("Error 304: Operacion fallida!");
+        }
+    }
+
+    private void printR(ArrayList<Rental> rentals) {
+
+        if (rentals == null) {
+            
+            ui.showText("Error 200: No hemos encontrado nada en la base de datos.");
+        }
+
+        for(int i = 0 ; i < rentals.size() ; i++) {
+
+            ui.showText(rentals.get(i).getRentalId() + "\t");
+
+            if ((i + 1) % 4 == 0) {
+                
+                ui.newLine(); // Salto de linea.
+            }
+        }
     }
 
     private int rentals() {
@@ -427,6 +558,90 @@ public class MainMenu {
 
     }
 
+    private void rentalsMenu(int option3) {
+
+        switch (option3) {
+            case 1:
+                rentMovie();
+                break;
+            
+            case 2:
+                returnMovie();
+                break;
+                
+            case 3:
+                printAllRentals();
+                break;
+
+            case 4:
+                printActiveRentals();              
+                break;
+
+            case 5:
+                printInactiveRentals();
+                break;
+
+            case 6:
+                searchRentalById();
+                break;
+
+            case 7:
+                removeRental();
+                break;
+
+            case 0:
+                break;
+        
+            default:
+                ui.showText("Opcion invalida!");
+                return;
+        }
+    }
+
+    private void searchRentalById() {
+
+        String rentalId = ui.inputText("ID de la pelicula: ");
+        Rental rental = store.findRentalById(rentalId);
+
+        if (rental == null) {
+            
+            ui.showText("Error 200: La renta no se encuentra registrada en la base de datos.");
+        }
+
+        else {
+                ArrayList<Movie> movies = rental.consultRentedMovies();
+                ui.showText("PELICULAS\n");
+
+                for(Movie movie : movies) {
+                    ui.showText(movie.getMovieName() + "\n");
+                }
+
+                ui.showText("\n");
+                ui.showText("PROPIETARIO: " + rental.getCustomer().getCustomerName() + "\n");
+                ui.showText("VALOR: " + rental.getRentalCost() + "\n");
+                ui.showText("DIAS: " + rental.getRentalDays() + "\n");
+                ui.showText("ESTADO: " + rental.getRentalState() + "\n");
+        }
+    }
+
+    private void printAllRentals() {
+
+        ArrayList<Rental> rentals = store.consultAllRentals();
+        printR(rentals);
+    }
+
+    private void printActiveRentals() {
+
+        ArrayList<Rental> rentals = store.findActiveRentals();
+        printR(rentals);
+    }
+
+    private void printInactiveRentals() {
+
+        ArrayList<Rental> rentals = store.findInactiveRentals();
+        printR(rentals);
+    }
+
     private int settings() {
 
         ui.showText(
@@ -440,12 +655,6 @@ public class MainMenu {
             "\n" + 
             "-------------------------------\n" + 
             "\n" + 
-            "USUARIO\n" + 
-            "\n" + 
-            "3. Ver información del usuario\n" + 
-            "\n" + 
-            "-------------------------------\n" + 
-            "\n" + 
             "0. Volver\n" + 
             "\n" + 
             "==============================="
@@ -455,8 +664,47 @@ public class MainMenu {
         return option;
     }
 
+    private void settingsMenu(int option4) {
+
+        switch (option4) {
+            case 1:
+                printRentalPrice();
+                break;
+            
+            case 2:
+                uptadeRentalPrice();
+                break;
+                
+            case 0:
+                break;
+
+            default:
+                ui.showText("Opcion invalida!");
+                return;
+        }
+    }
+
+    private void printRentalPrice() {
+
+        int price = store.consultRentalPrice();
+        ui.showText("PRECIO ACTUAL: " + price);
+
+    }
+
+    private void uptadeRentalPrice() {
+
+        boolean confirmation;
+
+        do {
+
+            int price = ui.inputInt("NUEVO PRECIO: ");
+            confirmation = store.updateCurrentRentalPrice(price);
+        } while (!confirmation);
+
+    }
+
     // Alquilar pelicula.
-    public void option1() {
+    private void rentMovie() {
 
         ArrayList<Movie> movies = moviesList();
         Customer customer = verifyCustomer();
@@ -471,11 +719,6 @@ public class MainMenu {
     }
 
     // Devolver pelicula.
-    public void option2() {
-
-        returnMovie();
-    }
-
     private void returnMovie() {
 
         String rentalId = null;
@@ -488,7 +731,7 @@ public class MainMenu {
 
             if (rental == null) {
                 
-                ui.showText("No se encontro ninguna renta con el ID: " + rentalId);
+                ui.showText("Error 200: No se encontro ninguna renta con el ID: " + rentalId);
             }
 
             else if(rental.getRentalState() == false){ // Para saber si esta renta ya se desactivo.
@@ -501,8 +744,6 @@ public class MainMenu {
         rental.processReturnMovie(rental.consultRentedMovies());
 
     }
-
-
 
     // Metodo para el parametro rentedMovies de la clase rental. 
     private ArrayList<Movie> moviesList() {
@@ -530,7 +771,7 @@ public class MainMenu {
 
                 else if (movie.isMovieRented() == true) {
                 
-                    ui.showText("La pelicula: " + movie.getMovieName() + ", se encuentra rentada.");
+                    ui.showText("Error 301! La pelicula: " + movie.getMovieName() + ", se encuentra rentada.");
                     ui.newLine();
                 }
 
@@ -555,13 +796,13 @@ public class MainMenu {
 
                 if(customer == null) {
                     
-                    ui.showText("El cliente " +idCustomer+ ", no se encuentra en la base de datos.");
+                    ui.showText("Error 200! El cliente: " + idCustomer + ", no se encuentra en la base de datos.");
                     ui.newLine();
                 }
 
                 else if(customer.getCustomerState() == true) {
 
-                    ui.showText("El cliente " +idCustomer+ ", tiene una renta a su nombre.");
+                    ui.showText("Error 300! El cliente " + idCustomer + ", tiene una renta a su nombre.");
 
                 }
 
@@ -581,7 +822,7 @@ public class MainMenu {
 
             if ( (rentalDays <= 0) || (rentalDays > 20) ) {
                 
-                ui.showText("Dato invalido.");
+                ui.showText("Error 202: Dato invalido.");
                 ui.newLine();
                 ui.showText("Minimo: 1 dia | Maximo: 20 dias.");
                 ui.newLine();
@@ -613,7 +854,17 @@ public class MainMenu {
         return rentalId;
     }
 
-    public void rentalPrice(){
+    private void removeRental(){
 
+        ui.inputText("Ingrese el ID: ");
+        boolean confirmation = store.deleteRental(null);
+
+        if (confirmation) {
+            ui.showText("Proceso exitoso!");
+        }
+
+        else{
+            ui.showText("Error 304! Proceso fallido.");
+        }
     }
 }
