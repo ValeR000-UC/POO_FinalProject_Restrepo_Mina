@@ -14,9 +14,9 @@ import domain.User;
 public class MainMenu {
     
     private Store store;
-    private Ui ui = new UiConsole(); // Hacemos que trabaje por consola, pero queda abierta para cualquier otra interfaz.
+    private Ui ui = new UiConsole(); // Use console for interaction, but keep it open for any other interface
 
-    // Creamos el contructor para no estar pidiendo las clases en cada metodo.
+    // Create constructor to avoid passing the classes in every method
     public MainMenu(Store store, Ui ui){
 
         this.store = store;
@@ -33,7 +33,7 @@ public class MainMenu {
         int option4;
 
         do {           
-            option = videoStore(); // Mostramos el menu principal de la tienda.
+            option = videoStore(); //Show main menu
             ui.newLine();
             switch (option) {
                 case 1:
@@ -146,7 +146,6 @@ public class MainMenu {
         return option;
     }
 
-    
 
     private int movies() {
 
@@ -232,7 +231,7 @@ public class MainMenu {
         }
     }
 
-    private void printM(ArrayList<Movie> movies) {
+    private void printM(ArrayList<Movie> movies) { // Display movies in rows of 4 and show a message if the list is empty
 
         if (movies == null || movies.isEmpty()) {
             
@@ -246,14 +245,14 @@ public class MainMenu {
 
             if ((i + 1) % 4 == 0) {
                 
-                ui.newLine(); // Salto de linea.
+                ui.newLine();
             }
         }
 
         ui.newLine();
     }
 
-    private void printC(ArrayList<Customer> customers) {
+    private void printC(ArrayList<Customer> customers) { // Display customers in rows of 4 and show a message if the list is empty
 
         if (customers == null || customers.isEmpty()) {
 
@@ -274,7 +273,7 @@ public class MainMenu {
         ui.newLine();
     }
 
-    private void processRemoveMovie() {
+    private void processRemoveMovie() { // Remove a movie and show whether the operation was successful
 
         String movieId = ui.inputText("ID de la pelicula: ");
         boolean confirmation = store.deleteMovie(movieId);
@@ -288,7 +287,7 @@ public class MainMenu {
         }
     }
 
-    private void processRegisterMovie() {
+    private void processRegisterMovie() { // Register a movie by collecting data, validating inputs, and saving it to the store
 
         String movieName = ui.inputText("Nombre: ");
         ui.newLine();
@@ -301,10 +300,10 @@ public class MainMenu {
         do {
             
             String genreId = ui.inputText("ID de Genero: "); 
-            genre = store.findGenreById(genreId); // Buscamos el objeto tipo genre.
+            genre = store.findGenreById(genreId); 
 
             if(genre == null) {
-                ui.showText("El ID: " + genreId + ", no existe en la base de datos."); // Si el genero NO existe.
+                ui.showText("El ID: " + genreId + ", no existe en la base de datos."); // if the genre doesn't exists
             }
 
         } while (genre == null);
@@ -315,15 +314,15 @@ public class MainMenu {
         do {
 
             flag = false; // Reinicio de bandera.
-            movieId = ui.inputText("ID de la pelicula: "); // Parametro para crear objeto Movie
-            Movie m = store.findMovieById(movieId); // Para verificar que no exista.
+            movieId = ui.inputText("ID de la pelicula: "); 
+            Movie m = store.findMovieById(movieId); 
 
             if(movieId.length() <= 0 || movieId.length() > 5) {
                 ui.showText("Error 202: Dato invalido! Min: 1 | Max: 5"); 
                 flag = true;
             }
             
-            else if(m != null) { // Verificamos si encontro una pelicula con el mismo id.
+            else if(m != null) { // Check if a movie with the same ID already exists
 
                 ui.showText("Error 301: El ID: " + movieId + " ya se encuentra registrado.");
                 flag = true;
@@ -331,8 +330,8 @@ public class MainMenu {
 
         } while (flag);
 
-        Movie movie = new Movie(movieName, movieId, year, director, genre); // Creamos el objeto.
-        boolean confirmation = store.registerMovie(movie); // Registramos la pelicula.
+        Movie movie = new Movie(movieName, movieId, year, director, genre); //Creates the objects
+        boolean confirmation = store.registerMovie(movie); 
         
         if (confirmation) {
             ui.showText("Registro exitoso!");
@@ -345,7 +344,7 @@ public class MainMenu {
 
     private void printAllMovies() {
 
-        ArrayList<Movie> movies = store.consultAllMovies(); // Traemos todas las peliculas.
+        ArrayList<Movie> movies = store.consultAllMovies();
         printM(movies);
     }
 
@@ -514,7 +513,7 @@ public class MainMenu {
         printC(customers);
     }
 
-    private void processRegisterCustomer() {
+    private void processRegisterCustomer() { // Register a customer by validating data and saving it to the store
 
         String customerName = ui.inputText("Nombre del cliente: ");
         String customerId;
@@ -522,7 +521,7 @@ public class MainMenu {
 
         do {
             
-            flag = false; // Reinicio.
+            flag = false; 
             customerId = ui.inputText("Cedula: ");
 
             if (customerId.length() < 10 || customerId.length() > 10) {
@@ -533,7 +532,7 @@ public class MainMenu {
 
         } while (flag);
         
-        Customer customer = new Customer(customerName, customerId); // Creamos el objeto.
+        Customer customer = new Customer(customerName, customerId); 
         boolean confirmation = store.registerCustomer(customer);
 
         if (confirmation) {
@@ -547,8 +546,8 @@ public class MainMenu {
 
     }
 
-    private void processRemoveCustomer() {
-
+    private void processRemoveCustomer() { // Remove a customer and show whether the operation was successful
+ 
         String customerId = ui.inputText("Cedula del cliente: ");
         boolean confirmation = store.deleteCustomer(customerId);
 
@@ -575,7 +574,7 @@ public class MainMenu {
 
             if ((i + 1) % 4 == 0) {
                 
-                ui.newLine(); // Salto de linea.
+                ui.newLine();
             }
         }
 
@@ -764,7 +763,6 @@ public class MainMenu {
     }
 
     private void uptadeRentalPrice() {
-
         boolean confirmation;
 
         do {
@@ -775,22 +773,21 @@ public class MainMenu {
 
     }
 
-    // Alquilar pelicula.
+
     private void rentMovie() {
 
         ArrayList<Movie> movies = moviesList();
         Customer customer = verifyCustomer();
         int rentalDays = verifyRentalDays();
-        User user = store.getUser(); // Guardamos el objeto usuario para crear el objeto rental.
+        User user = store.getUser(); // Get user object to create the rental object
         String rentalId = createRentalId();
 
-        // Creamos el objeto renta.
+        //Creates rental obj
         Rental rental = new Rental(movies, user, customer, rentalId, rentalDays);
-        rental.processRentMovie(store.consultRentalPrice(), movies); // Rentamos las peliculas.
-        store.registerRental(rental); // Agregamos la renta a la lista.
+        rental.processRentMovie(store.consultRentalPrice(), movies); //rent the movie
+        store.registerRental(rental);
     }
 
-    // Devolver pelicula.
     private void returnMovie() {
 
         String rentalId = null;
@@ -806,7 +803,7 @@ public class MainMenu {
                 ui.showText("Error 200: No se encontro ninguna renta con el ID: " + rentalId);
             }
 
-            else if(rental.getRentalState() == false){ // Para saber si esta renta ya se desactivo.
+            else if(rental.getRentalState() == false){ 
 
                 ui.showText("La renta: " + rental.getRentalId() + ", ya se encuentra desactivada.");
             }
@@ -817,22 +814,22 @@ public class MainMenu {
 
     }
 
-    // Metodo para el parametro rentedMovies de la clase rental. 
-    private ArrayList<Movie> moviesList() {
 
-        ArrayList<Movie> movies = new ArrayList<>(); // Esta lista es la que se le pasa a Rental para crear el objeto.
+    private ArrayList<Movie> moviesList() { // Create and return a list of valid and available movies for rental
+
+        ArrayList<Movie> movies = new ArrayList<>(); // This list is passed to Rental to create the object
         int numMovies = ui.inputInt("Ingrese la cantidad de peliculas: ");
         ui.newLine();
 
         for(int i = 1 ; i <= numMovies ; i++){
 
-            Movie movie = null; // Variable temporal para guardar cada pelicula.
+            Movie movie = null; // Temporary variable to store each movie
 
-            // Bloque para garantizar que se ingrese un codigo valido.
+            // Block to ensure a valid code is entered
             do {
                 
                 String movieId = ui.inputText("Ingrese el codigo de la pelicula numero " + i);
-                movie = store.findMovieById(movieId); // Buscamos el objeto.
+                movie = store.findMovieById(movieId);
                 ui.newLine();
 
                 if (movie == null) {
@@ -849,18 +846,18 @@ public class MainMenu {
 
             } while (movie == null || movie.isMovieRented() == true);
 
-            movies.add(movie); // Vamos llenando la lista de acuerdo a la cantidad de peliculas.
-            ui.showText(movie.getMovieName() + " Agregada correctamente."); // Informamos que todo salio bien.
+            movies.add(movie);
+            ui.showText(movie.getMovieName() + " Agregada correctamente.");
         }
 
         return movies;
     }
 
-    // Metodo para el parametro customer de la clase Rental.
-    private Customer verifyCustomer() {
+
+    private Customer verifyCustomer() {// Validate customer and return it only if it exists and has no active rental
 
         Customer customer = null;
-        // Bloque para verificar que el id sea correcto.
+
         do {
                 String idCustomer = ui.inputText("Id del Cliente: ");
                 customer = store.findCustomerById(idCustomer);
@@ -883,14 +880,14 @@ public class MainMenu {
         return customer;
     } 
 
-    // Metodo para el parametro rentalDays de la clase Rental.
-    private int verifyRentalDays() {
+
+    private int verifyRentalDays() { // Validate rental days and return a value between 1 and 20
 
         int rentalDays;
-            // Bloque para verificar que rentalDays sea valido.
+
         do {
             
-            rentalDays = ui.inputInt("Cantidad de dias: "); // Se la pasamos al objeto rental
+            rentalDays = ui.inputInt("Cantidad de dias: ");
 
             if ( (rentalDays <= 0) || (rentalDays > 20) ) {
                 
@@ -907,17 +904,16 @@ public class MainMenu {
         return rentalDays;
     }
 
-    // Metodo para el parametro rentalId de la clase Rental.
     private String createRentalId() {
 
         Random random = new Random();
         String rentalId;
-        Rental search; // Para buscar que no haya una renta con el mismo ID.
+        Rental search; 
         
-        // Bloque para generar el id de la renta.
+
         do {
             
-            rentalId = String.valueOf(random.nextInt(100001)); // Genera un numero entre 0 y 100000 para los ids y lo guarda como String.
+            rentalId = String.valueOf(random.nextInt(100001)); // Generate a number between 0 and 100000 for IDs and store it as String
             search = store.findRentalById(rentalId); 
             ui.newLine();
 

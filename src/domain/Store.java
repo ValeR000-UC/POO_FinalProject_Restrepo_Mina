@@ -232,15 +232,15 @@ public class Store implements Serializable {
 
         for(Movie movie : movies) {
 
-            if (movie.isMovieRented() == false) { // Preguntamos si movie NO esta rentada.
+            if (movie.isMovieRented() == false) { // Ask if movie is not rented
                 
-                busqueda.add(movie); // La agregamos a la lista.
+                busqueda.add(movie); // add to the list
                 
             }
 
        }
 
-       return busqueda; // Retornamos la lista.
+       return busqueda; 
     }
 
     public ArrayList<Movie> findUnavaibleMovies() {
@@ -249,14 +249,14 @@ public class Store implements Serializable {
 
         for(Movie movie : movies) {
 
-            if (movie.isMovieRented() == true) { // Preguntar si movie esta rentada
-                busqueda.add(movie); // La agregamos a la lista.
+            if (movie.isMovieRented() == true) { // Ask if movie is rented
+                busqueda.add(movie);
                 
             }
 
        }
 
-       return busqueda; // Retornamos la lista.
+       return busqueda;
     }
 
     public ArrayList<Customer> findActiveCustomers() {
@@ -265,15 +265,12 @@ public class Store implements Serializable {
 
         for(Customer customer : customers) {
 
-            if (customer.getCustomerState() == true) { // Preguntar si customer esta activo
-                busqueda.add(customer); // Agregar a la lista.
+            if (customer.getCustomerState() == true) { //Ask if customer is active
+                busqueda.add(customer);
                 
             }
-
        }
-
-       return busqueda; // Retornamos la lista.
-    }
+       return busqueda; }
 
     public ArrayList<Customer> findInactiveCustomers() {
         
@@ -281,14 +278,13 @@ public class Store implements Serializable {
 
         for(Customer customer : customers) {
 
-            if (customer.getCustomerState() == false) { // Preguntar si customer NO esta activo
-                busqueda.add(customer); // Agregar a la lista.
+            if (customer.getCustomerState() == false) { // Ask if customer is NOT active
+                busqueda.add(customer); 
                 
             }
-
        }
 
-       return busqueda; // Retornamos la lista.
+       return busqueda;
     }
 
     public ArrayList<Rental> findActiveRentals() {
@@ -297,14 +293,12 @@ public class Store implements Serializable {
 
         for(Rental rental : rentals) {
 
-            if (rental.getRentalState() == true) { // Preguntar si rental esta activa
-                busqueda.add(rental); // Agregar a la lista.
+            if (rental.getRentalState() == true) { //Ask if the rent is active
+                busqueda.add(rental);
                 
             }
-
        }
-
-       return busqueda; // Retornamos la lista.
+       return busqueda;
     }
 
     public ArrayList<Rental> findInactiveRentals() {
@@ -313,14 +307,13 @@ public class Store implements Serializable {
 
         for(Rental rental : rentals) {
 
-            if (rental.getRentalState() == false) { // Preguntar si rental NO esta activa
-                busqueda.add(rental); // Agregar a la lista.
+            if (rental.getRentalState() == false) {
+                busqueda.add(rental);
                 
             }
 
        }
-
-       return busqueda; // Retornamos la lista.
+       return busqueda;
     }
 
     public ArrayList<Movie> findMoviesByGenre(String genreId) {
@@ -370,14 +363,14 @@ public class Store implements Serializable {
                 
                 if (!movie.isMovieRented()) {
                     
-                    movies.remove(movie); // Eliminamos la pelicula.
+                    movies.remove(movie);
                     flag = true;
                     break;
                 }               
             }
         }
 
-        return flag; // Para imprimir en el main.
+        return flag;
     }
 
     public boolean deleteRental(String rentalId) {
@@ -390,14 +383,14 @@ public class Store implements Serializable {
 
                 if (!rental.getRentalState()) {
                     
-                    rentals.remove(rental); // Eliminamos la renta.
+                    rentals.remove(rental);
                     flag = true;
                     break;
                 }
             }
         }
 
-        return flag; // Para imprimir en el main.
+        return flag;
     }
 
     public boolean deleteCustomer(String customerId) {
@@ -408,18 +401,16 @@ public class Store implements Serializable {
             
             if (customerId.equals(customer.getCustomerId())) {
 
-                if (!customer.getCustomerState()) { // Preguntamos si tiene una renta a su nombre
+                if (!customer.getCustomerState()) { // Check if the customer has a rental under their name
 
-                    customers.remove(customer); // Eliminamos el costumer.
-                    flag = true; // Alzamos la bandera.
-                    break; // Se termina la busqueda.                    
+                    customers.remove(customer);
+                    flag = true;
+                    break;                 
                 }
             }
         }
 
-        return flag; // Para imprimir en el main. 
-    }
-// Recommends available movies from the most rented genre
+        return flag; }
 // Recommends movies based on genres currently rented
     public ArrayList<Movie> recommendMovies() {
 
