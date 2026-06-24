@@ -68,6 +68,14 @@ public class MainMenu {
                     } while (option4 != 0);
                     break;
 
+                case 5:
+                    do {
+                        option4 = settings();
+                        settingsMenu(option4);
+                        ui.newLine();
+                    } while (option4 != 0);
+                    break;
+
                 case 0:
                     ui.showText("Gracias por visitarnos! Te esperamos pronto...");
                     break;
@@ -166,10 +174,12 @@ public class MainMenu {
 
             case 7:
                 processRegisterMovie();
+                DataManager.saveObject("store.dat", store);
                 break;
 
             case 8:
                 processRemoveMovie();
+                DataManager.saveObject("store.dat", store);
                 break;
             
             case 0:
@@ -403,14 +413,16 @@ public class MainMenu {
 
             case 6:
                 processRegisterCustomer();
+                DataManager.saveObject("store.dat", store);
                 break;
 
             case 7:
                 processRemoveCustomer();
+                DataManager.saveObject("store.dat", store);
                 break;
 
             case 0:
-                ui.showText("Gracias por visitarnos! Te esperamos pronto...");
+                ui.showText("Volviendo al menu principal...");
                 DataManager.saveObject("store.dat", store);
                 break;
         
@@ -577,10 +589,12 @@ public class MainMenu {
         switch (option3) {
             case 1:
                 rentMovie();
+                DataManager.saveObject("store.dat", store);
                 break;
             
             case 2:
                 returnMovie();
+                DataManager.saveObject("store.dat", store);
                 break;
                 
             case 3:
@@ -601,9 +615,11 @@ public class MainMenu {
 
             case 7:
                 removeRental();
+                DataManager.saveObject("store.dat", store);
                 break;
 
             case 0:
+                DataManager.saveObject("store.dat", store);
                 break;
         
             default:
@@ -687,6 +703,7 @@ public class MainMenu {
             
             case 2:
                 uptadeRentalPrice();
+                DataManager.saveObject("store.dat", store);
                 break;
                 
             case 0:
