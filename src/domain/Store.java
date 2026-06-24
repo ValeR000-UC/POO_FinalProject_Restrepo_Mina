@@ -219,6 +219,7 @@ public class Store implements Serializable {
 
             if (customer.getCustomerName().toLowerCase().contains(customerName.toLowerCase())) { // Check if the customer name contains the entered name
                 
+                busqueda.add(customer);
             }
 
        }
