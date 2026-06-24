@@ -2,6 +2,8 @@ package domain;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import data.CSVmanager;
+
 //Central class of the system. Acts as the main data container, holding all collections of movies, customers, rentals and genres. 
 //Provides all registration, search, listing and deletion operations used throughout the application.
 

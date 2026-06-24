@@ -2,6 +2,7 @@ package ui;
 import java.util.ArrayList;
 import java.util.Random;
 
+import data.CSVmanager;
 import data.DataManager;
 import domain.Customer;
 import domain.Genre;
@@ -68,6 +69,17 @@ public class MainMenu {
                     } while (option4 != 0);
                     break;
 
+                case 5:
+                    importCSV();
+                    break;
+
+                case 6:
+                    exportCSV();
+                    break;
+
+                case 7:
+                    store.recommendMovies();
+
                 case 0:
                     ui.showText("Gracias por visitarnos! Te esperamos pronto...");
                     break;
@@ -89,7 +101,10 @@ public class MainMenu {
             "1. Películas\n" + 
             "2. Clientes\n" + 
             "3. Rentas\n" + 
-            "4. Configuración\n" + 
+            "4. Configuración\n" +
+            "5. Importar CSV\n" + 
+            "6. Exportar CSV\n" +
+            "7. Recomendaciones\n" + 
             "0. Salir\n" + 
             "\n" + 
             "===========================================\n" 
@@ -98,6 +113,8 @@ public class MainMenu {
         int option = ui.inputInt("Seleccione una opción: ");
         return option;
     }
+
+    
 
     private int movies() {
 
@@ -880,5 +897,86 @@ public class MainMenu {
         else{
             ui.showText("Error 304! Proceso fallido.");
         }
+    }
+
+    public void importCSV() {
+
+        String[][] movieMatrix =
+            CSVmanager.loadCSVToMMovies("movies.csv");
+
+        String[][] customerMatrix =
+            CSVmanager.loadCSVToMCustomer("customers.csv");
+
+        String[][] rentalMatrix =
+            CSVmanager.loadCSVToM("rentals.csv");
+
+        Store tempStore = new Store(
+            "Store",
+            0,
+            new ArrayList<>(),
+            new ArrayList<>(),
+            new ArrayList<>(),
+            store.consultAllGenres(), // reuse existing genres
+            null
+        );
+
+        ArrayList<Movie> movies =
+            CSVmanager.matrixToMovies(
+                movieMatrix,
+                tempStore
+            );
+
+        ArrayList<Customer> customers =
+            CSVmanager.matrixToCustomer(
+                customerMatrix
+            );
+
+        Store storeWithData = new Store(
+            "Store",
+            0,
+            movies,
+            customers,
+            new ArrayList<>(),
+            store.consultAllGenres(),
+            null
+        );
+
+        ArrayList<Rental> rentals =
+            CSVmanager.matrixToRentals(
+                rentalMatrix,
+                storeWithData
+            );
+
+        store = new Store(
+            "Store",
+            0,
+            movies,
+            customers,
+            rentals,
+            store.consultAllGenres(),
+            null
+        );
+
+        ui.showText("Importación exitosa!");
+    }
+
+    public void exportCSV() {
+
+        CSVmanager.saveMoviesMToCSV(
+            "movies.csv",
+            CSVmanager.exportMovieToM(store.consultAllMovies())
+        );
+
+        CSVmanager.saveCustomerMToCSV(
+            "customers.csv",
+            CSVmanager.exportCustomerToM(store.consultAllCustomers())
+        );
+
+        CSVmanager.saveRentalMToCSV(
+            "rentals.csv",
+            CSVmanager.exportRentalToM(store.consultAllRentals())
+        );
+
+        ui.showText("Exportación exitosa!");
     }
 }
