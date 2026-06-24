@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import domain.Movie;
 import domain.Store;
 import domain.User;
-import domain.Movie;
 import domain.Customer;
 import domain.Rental;
 import domain.Genre;
