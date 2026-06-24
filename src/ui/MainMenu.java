@@ -314,7 +314,8 @@ public class MainMenu {
 
     private void searchMoviesByName() {
 
-        ArrayList<Movie> movies = store.findMoviesByName(null);
+        String movieName = ui.inputText("Nombre de la pelicula: ");
+        ArrayList<Movie> movies = store.findMoviesByName(movieName);
         printM(movies);
 
     }
@@ -856,8 +857,8 @@ public class MainMenu {
 
     private void removeRental(){
 
-        ui.inputText("Ingrese el ID: ");
-        boolean confirmation = store.deleteRental(null);
+        String rentalId = ui.inputText("Ingrese el ID: ");
+        boolean confirmation = store.deleteRental(rentalId);
 
         if (confirmation) {
             ui.showText("Proceso exitoso!");
