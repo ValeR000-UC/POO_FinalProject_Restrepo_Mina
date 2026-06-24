@@ -1,6 +1,7 @@
 package ui;
-
 import java.util.ArrayList;
+
+import domain.Movie;
 import domain.Store;
 import domain.User;
 import domain.Movie;
