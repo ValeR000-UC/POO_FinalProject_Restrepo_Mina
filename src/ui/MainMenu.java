@@ -181,9 +181,10 @@ public class MainMenu {
 
     private void printM(ArrayList<Movie> movies) {
 
-        if (movies == null) {
+        if (movies == null || movies.isEmpty()) {
             
             ui.showText("No hemos encontrado nada en la base de datos.");
+            return; // Termina el metodo.
         }
 
         for(int i = 0 ; i < movies.size() ; i++) {
@@ -195,24 +196,29 @@ public class MainMenu {
                 ui.newLine(); // Salto de linea.
             }
         }
+
+        ui.newLine();
     }
 
     private void printC(ArrayList<Customer> customers) {
 
-        if (customers == null) {
-            
+        if (customers == null || customers.isEmpty()) {
+
             ui.showText("Error 200: No hemos encontrado nada en la base de datos.");
+            return;
         }
 
-        for(int i = 0 ; i < customers.size() ; i++) {
+        for(int i = 0; i < customers.size(); i++) {
 
             ui.showText(customers.get(i).getCustomerName() + "\t");
 
             if ((i + 1) % 4 == 0) {
-                
-                ui.newLine(); // Salto de linea.
+
+                ui.newLine();
             }
         }
+
+        ui.newLine();
     }
 
     private void processRemoveMovie() {
@@ -500,9 +506,10 @@ public class MainMenu {
 
     private void printR(ArrayList<Rental> rentals) {
 
-        if (rentals == null) {
+        if (rentals == null || rentals.isEmpty()) {
             
             ui.showText("Error 200: No hemos encontrado nada en la base de datos.");
+            return;
         }
 
         for(int i = 0 ; i < rentals.size() ; i++) {
@@ -514,6 +521,8 @@ public class MainMenu {
                 ui.newLine(); // Salto de linea.
             }
         }
+
+        ui.newLine();
     }
 
     private int rentals() {
