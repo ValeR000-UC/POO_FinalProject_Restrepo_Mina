@@ -13,7 +13,7 @@ public class Rental implements Serializable {
     private User user;
     private Customer customer;
     private String rentalId;
-    private boolean rentalActive = true; // Se crea en activa por defecto.
+    private boolean rentalActive = true; // Created as active by default
     private int rentalDays;
     private int rentalCost;
 
@@ -28,7 +28,7 @@ public class Rental implements Serializable {
 
     }
 
-    private void calculateRentalCost(int currentPrice) { // Metodo que calcula el costo de la renta.
+    private void calculateRentalCost(int currentPrice) { // Method that calculates the rental cost
         
         rentalCost = (rentalDays * currentPrice) * consultRentedMovies().size();
         
@@ -36,14 +36,13 @@ public class Rental implements Serializable {
 
     public void processRentMovie(int currentPrice, ArrayList<Movie> movies) {
 
-        calculateRentalCost(currentPrice); // Calculamos el costo de la renta de las peliculas.
-        rent(movies); // Se hace la renta.
+        calculateRentalCost(currentPrice); // Calculate the rental cost of the movies
+        rent(movies); // Perform the rental process
     
     }
 
     public void processReturnMovie(ArrayList<Movie> movies) {
-
-        returnMovie(movies); // Se devuelve la pelicula.
+        returnMovie(movies); 
     }
 
     public String getRentalId() {
@@ -63,11 +62,11 @@ public class Rental implements Serializable {
     }
 
     public User getUser() {
-        return user; // Retorna usuario asociado a la renta
+        return user; // Return user associated with the rental
     }
 
     public Customer getCustomer() {
-        return customer; // Retorna customer asociado a la renta.
+        return customer; // // Return customer associated with the rental
     }
 
     public ArrayList<Movie> consultRentedMovies() {
@@ -78,26 +77,26 @@ public class Rental implements Serializable {
     private void rent(ArrayList<Movie> movies) {
 
         for(Movie movie : movies) {
-            movie.markAsRented(); // Cambiamos el estado de la pelicula (se renta).
+            movie.markAsRented(); // // Change movie status to rented
         }
-
-        customer.changeCustomerState(); // Customer activo (No puede rentar).
+        customer.changeCustomerState(); // Customer active (cannot rent)
     }
 
     private void returnMovie(ArrayList<Movie> movies) {
 
         for(Movie movie : movies) {
-           movie.markAsAvaible(); // Cambiamos el estado de la pelicula (se devuelve)
+            movie.markAsAvaible(); // Change movie status to available (returned)
         }
 
-        customer.changeCustomerState(); // Customer inactivo (Puede rentar).
-    }
-// Agregar estos dos setters en Rental.java
+        customer.changeCustomerState(); // Customer inactive (can rent)
+        setRentalState(false);}
+
+
     public void setRentalState(boolean state) {
-        rentalActive = state; // restaura el estado desde el CSV
+        rentalActive = state; // Restore state from CSV
     }
 
     public void setRentalCost(int cost) {
-        rentalCost = cost; // restaura el costo fijo desde el CSV, no recalcula
+        rentalCost = cost; // Restore fixed cost from CSV, do not recalculate
     }
 }

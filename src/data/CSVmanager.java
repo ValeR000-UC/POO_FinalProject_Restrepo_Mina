@@ -354,77 +354,7 @@ public class CSVmanager {
     }
     
 // ---- Store ----
-    public static String[][] exportStoreToM(Store store) {
 
-        ArrayList<Rental> rentals = store.consultAllRentals(); // gets all rentals directly from the store object
-        String[][] matrix = new String[rentals.size()][10];
-
-        for (int i = 0; i < rentals.size(); i++) {
-
-            Rental ren = rentals.get(i);
-            User user = ren.getUser(); //extracts nested objects first to avoid repeated method calls
-            Customer customer = ren.getCustomer();
-
-            matrix[i][0] = user.getUserName();
-            matrix[i][1] = user.getUserid();
-            matrix[i][2] = String.valueOf(user.getUserState());
-
-            matrix[i][3] = customer.getCustomerName();
-            matrix[i][4] = customer.getCustomerId();
-            matrix[i][5] = String.valueOf(customer.getCustomerState());
-
-            matrix[i][6] = ren.getRentalId();
-            matrix[i][7] = String.valueOf(ren.getRentalState());
-            matrix[i][8] = String.valueOf(ren.getRentalDays());
-            matrix[i][9] = String.valueOf(ren.getRentalCost());
-        }
-        return matrix;
-    }
-    public static boolean saveStoreMToCSV(String filename, String[][] matrix) { 
-
-        StringBuilder sb = new StringBuilder();
-
-        for (int i = 0; i < matrix.length; i++) {
-            for (int j = 0; j < matrix[i].length; j++) {
-                sb.append(matrix[i][j]);
-
-                if (j < matrix[i].length - 1) {
-                    sb.append(",");
-                }
-            }
-            sb.append(System.lineSeparator());
-        }
-        try (BufferedWriter bw = new BufferedWriter(new FileWriter(filename))) {
-            bw.write(sb.toString());
-            return true;
-
-        } catch (IOException e) {
-            System.err.println("Error guardando CSV... " + e.getMessage());
-            return false;
-        }
-    }
-    public static String[][] loadCSVToMStore(String filename) {
-
-        StringBuilder sb = new StringBuilder();
-
-        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
-            String line;
-
-            while ((line = br.readLine()) != null) {
-                sb.append(line).append(System.lineSeparator());
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading CSV: " + e.getMessage());
-            return null;
-        }
-        String[] rows = sb.toString().split(System.lineSeparator());
-        String[][] matrix = new String[rows.length][];
-
-        for (int i = 0; i < rows.length; i++) {
-            matrix[i] = rows[i].split(",");
-        }
-        return matrix;
-    }
     public static Store matrixToStore(String[][] movieMatrix, String[][] customerMatrix,String[][] genreMatrix,String[][] rentalMatrix) {
 
         ArrayList<Genre> genres = matrixToGenres(genreMatrix, null); // genres first, they depend on nothing

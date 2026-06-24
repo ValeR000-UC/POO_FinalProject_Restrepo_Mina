@@ -19,22 +19,16 @@ public class Customer implements Serializable {
         this.customerId = customerId;
 
     }
-
     // Getters
     public String getCustomerName() {
-
         return customerName;
-
     }
 
     public String getCustomerId() {
-
         return customerId;
-
     }
 
     public boolean getCustomerState() {
-
         return customerState;
 
     }
@@ -42,10 +36,8 @@ public class Customer implements Serializable {
     public void changeCustomerState() { // Toggles the customer's active status
 
         if (customerState == false) {
-            
             customerState = true;
         }
-
         else {
             customerState = false;
         }
