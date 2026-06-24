@@ -2,7 +2,7 @@ package domain;
 import java.io.Serializable;
 
 //Represents a store customer. Stores the customer name, ID and activity state. 
-//A customer is considered active when they have an ongoing rental.
+//A customer is considered active when they have an ongoing rental
 
 public class Customer implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -10,7 +10,7 @@ public class Customer implements Serializable {
     // Atributes
     private String customerName;
     private String customerId;
-    private boolean customerState = false; // Se crea inactivo (sin una renta) por defecto.
+    private boolean customerState = false; // Initialized as inactive (no active rental)
 
     // Constuctor
     public Customer(String customerName, String customerId) {
@@ -39,7 +39,7 @@ public class Customer implements Serializable {
 
     }
 
-    public void changeCustomerState() {
+    public void changeCustomerState() { // Toggles the customer's active status
 
         if (customerState == false) {
             
@@ -50,6 +50,4 @@ public class Customer implements Serializable {
             customerState = false;
         }
     }
-    // Metodo para modificar el customerState. Cuando se renta una pelicula a su nombre, debe cambiarse a true.
-
 }

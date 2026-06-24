@@ -1,6 +1,8 @@
 package ui;
 import java.util.ArrayList;
 import java.util.Random;
+
+import data.DataManager;
 import domain.Customer;
 import domain.Genre;
 import domain.Movie;
@@ -402,6 +404,8 @@ public class MainMenu {
                 break;
 
             case 0:
+                ui.showText("Gracias por visitarnos! Te esperamos pronto...");
+                DataManager.saveObject("store.dat", store);
                 break;
         
             default:  

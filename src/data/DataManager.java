@@ -5,42 +5,27 @@ import java.io.*;
 //Handles binary persistence using ObjectOutputStream and ObjectInputStream, generating a single store.dat file that preserves the entire application state.
 
 public class DataManager{
-    public static <T extends Serializable> boolean saveObject(String filename, T object) {
-        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) {
-            oos.writeObject(object);
+    //saveObject, Saves a serializable object to a file
+    public static <T extends Serializable> boolean saveObject(String filename, T object) {  // Serializes and saves an object to a file
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filename))) { //Opens file and prepares object serialization
+            oos.writeObject(object); // Writes the object into the file
             return true;
         } catch (IOException e) {
             System.err.println("Error al guardar el objeto: " + e.getMessage());
-            return false;
+            return false; // Returns false if saving fails
         }
     }
-    //<T extends Serializable> → declara que este método trabaja con un tipo genérico T, que tiene que poder serializarse.
-    //(String filename, T object) → recibe el nombre del archivo y el objeto que querés guardar.
-    //FileOutputStream(filename) → abre/crea el archivo físico para escribir bytes en él
-    //ObjectOutputStream(...) → esta instruccion hace que se pueda escribir objetos completos, no solo bytes sueltos.
-    //try (...) → es un try-with-resources: al terminar el bloque cierra el archivo automáticamente solo
-    //oos.writeObject(object); Acá pasa la magia: agarra tu objeto y lo escribe (serializado) en el archivo.
-    //si no explota nada devuelve true y si no saca mensaje de error y devuelve false
 
-    // Metodo GENERICO para cargar cualquier objeto serializable
-    @SuppressWarnings("unchecked")
-    public static <T extends Serializable> T loadObject(String filename) {
-        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {
-            return (T) ois.readObject();
+    //loadObject, Loads a serialized object from a file
+    @SuppressWarnings("unchecked")  // Suppresses warning because Java cannot verify cast to generic type T at compile time
+    public static <T extends Serializable> T loadObject(String filename) { // Loads and deserializes an object from a file
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filename))) {  // Opens file and enables object reading
+            return (T) ois.readObject();// Reads and casts the object to type T
         } catch (IOException | ClassNotFoundException e) {
             System.err.println("Error al cargar el objeto: " + e.getMessage());
-            return null;
+            return null; // Returns null if loading fails
         }
     }
-    //public static <T extends Serializable> T loadObject(String filename) {Igual que antes, pero ahora el método devuelve un T (el objeto que cargó), no un boolean.
-    //FileInputStream(filename) → abre el archivo para leer bytes. 
-    //ObjectInputStream(...) → le agrega la capacidad de leer objetos completos desde esos bytes.
-    //ois.readObject() → lee el archivo y reconstruye el objeto guardado (pero Java lo devuelve como tipo Object genérico).
-    //(T) → lo "castea" (convierte) al tipo que vos le pediste cuando llamás al método (ej: Persona).
-    //si explota devuelve null y saca msj
-
-    //Guardar: Persona → se convierte a bytes → se escribe en un archivo .dat.
-    //Cargar: archivo .dat → se leen los bytes → se reconstruye la Persona original, tal cual estaba.
 }
 
 

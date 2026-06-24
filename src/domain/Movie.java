@@ -24,7 +24,6 @@ public class Movie implements Serializable { // implements serializable se usa p
         this.year = year;
         this.director = director;
         this.genre = genre;
-
     }
 
     // getters
